@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const JobOffer = require('./jobOffer')
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -47,6 +48,12 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 })
 
+userSchema.virtual('jobOffers', {
+  ref: 'JobOffer',
+  localField: '_id',
+  foreignField: 'owner'
+})
+
 userSchema.methods.toJSON = function () {
   const user = this
   const userObject = user.toObject()
@@ -90,6 +97,13 @@ userSchema.pre('save', async function (next) {
     user.password = await bcrypt.hash(user.password, 8)
   }
 
+  next()
+})
+
+// Delete on cascade jobOffer when a user is removed
+userSchema.pre('remove', async function (next) {
+  const user = this
+  await JobOffer.deleteMany({ owner: user._id })
   next()
 })
 
