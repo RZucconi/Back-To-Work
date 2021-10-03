@@ -3,7 +3,23 @@ const mongoose = require('mongoose')
 const jobOfferSchema = new mongoose.Schema({
   source: {
     type: String,
-    trim: true
+    trim: true,
+    required: true
+  },
+  companyName: {
+    type: String,
+    trim: true,
+    required: true
+  },
+  jobTitle:{
+    type: String,
+    trim: true,
+    required: true
+  },
+  contractType: {
+    type: String,
+    trim: true,
+    required: true
   },
   contactName: {
     type: String,
