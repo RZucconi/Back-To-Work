@@ -20,7 +20,7 @@ router.post('/users/login', async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body.email, req. body.password)
     const token = await user.generateAuthToken()
-    res.send({ user, token })
+    res.status(200).send({ user, token })
   } catch (err) {
     res.status(400).send(err)
   }
@@ -33,7 +33,7 @@ router.post('/users/logout', auth, async (req, res) => {
     })
     await req.user.save()
 
-    res.send()
+    res.send('ca marche')
   } catch (err) {
     res.status(500).send(err)
   }
