@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Container } from 'semantic-ui-react'
-import { onCreateUser } from '../actions'
 import AppHeader from './AppHeader'
 import SubscribeUser from './user/SubcribeUser'
 import Welcome from './Welcome'
 import history from '../history'
+import EditUser from './user/EditUser'
 
 const mapStateToProps = (state) => {
   return {
@@ -19,11 +19,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { onCreateUser })(class App extends Component {
-  onCreateUser = async (formValues) => {
-    await this.props.onCreateUser(formValues)
-  }
-
+export default connect(mapStateToProps)(class App extends Component {
   render() {
     return (
       <Container>
@@ -34,7 +30,10 @@ export default connect(mapStateToProps, { onCreateUser })(class App extends Comp
               <Welcome firstName={this.props.user.firstName} lastName={this.props.user.lastName} isSignIn={this.props.isSignIn} />         
             </Route>
             <Route path="/subscribe" exact>
-              <SubscribeUser onCreateUser={this.onCreateUser} />
+              <SubscribeUser />
+            </Route>
+            <Route path="/editUser" exact>
+              <EditUser />
             </Route>
           </Switch>
         </Router>

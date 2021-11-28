@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Button, Image, Menu } from 'semantic-ui-react'
+import { Button, Dropdown, Icon, Image, Menu } from 'semantic-ui-react'
 import Auth from './auth/Auth'
 import { signOut, authenticate } from '../actions'
 import { BTWLogo192 } from '../images'
 
 const mapStateToProps = (state) => {
-  return { userToken: state.user.userToken }
+  return { 
+    userToken: state.user.userToken,
+    userName: `${state.user.firstName} ${state.user.lastName}`
+  }
 }
 
 export default connect(mapStateToProps, { signOut, authenticate })(class AppHeader extends Component {
-  state = { activeItem: 'home', signIn: this.props.isSignIn, currentToken: null, isAuth: false }
+  state = { signIn: this.props.isSignIn, currentToken: null, isAuth: false }
   
   componentDidMount() {
     this.setState({ currentToken: localStorage.getItem('TOKEN') })
@@ -42,29 +45,36 @@ export default connect(mapStateToProps, { signOut, authenticate })(class AppHead
       <Menu pointing secondary>
         <Menu.Item
           name='home'
-          active={this.state.activeItem === 'home'}
           onClick={this.handleItemClick}
           >
           <Link to="/">
             <Image src={BTWLogo192} size='tiny' verticalAlign='middle'/>
-            <span className='ui header'>{'  '}{'////'}{'  '}Back To Work</span>
+            <span className='ui header'>{'    '}{'/////'}{'    '}Back To Work</span>
           </Link>
         </Menu.Item>
         {this.state.signIn ? (
           <Menu.Item
             name='logout'
-            activeItem={this.state.activeItem === 'logout'}
             onClick={this.handleItemClick}
             className="right"
           >
-            <Button content='Déconnection' color='red' onClick={this.handleLogout}/>
+            <Dropdown className="ui medium header" item text={this.props.userName}>
+              <Dropdown.Menu>
+                <Link to="/editUser">
+                  <Dropdown.Item>
+                    <Icon name="edit" verticalAlign='middle' color="black" />
+                    <span>Modifier vos informations</span>
+                  </Dropdown.Item>
+                </Link>
+              </Dropdown.Menu>
+            </Dropdown>
+            <Button content='Déconnection' negative onClick={this.handleLogout}/>
           </Menu.Item>
         ):( 
           <Menu.Item
-          name='login'
-          active={this.state.activeItem === 'login'}
-          onClick={this.handleItemClick}
-          className="right"
+            name='login'
+            onClick={this.handleItemClick}
+            className="right"
           >
             <Link to="/subscribe"><Button primary>Souscrire</Button></Link>
             <Auth />

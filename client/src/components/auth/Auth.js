@@ -7,7 +7,7 @@ import AuthForm from './AuthForm'
 const mapStateToProps = (state) => {
   return {
     isSignIn: state.auth.isSignIn, 
-    signInError: state.auth.signInError,
+    signInError: state.auth.error,
     userToken: state.user.userToken
   }
 }
@@ -17,12 +17,13 @@ export default connect(mapStateToProps, { signIn })(class Auth extends Component
 
   onSubmit = async (formValues) => {
     await this.props.signIn(formValues)
-
+    
     if (this.props.signInError) {
       this.setState({ secondOpen: true })
     } else {
       this.setState({ firstOpen: false })
     }
+    
   }
 
   closeModal = () => this.setState({ firstOpen: false })
@@ -30,24 +31,31 @@ export default connect(mapStateToProps, { signIn })(class Auth extends Component
   render() {
     return (
       <div>
-        <Button onClick={() => this.setState({ firstOpen: true })} color='green'>Login</Button>
+        <Button onClick={() => this.setState({ firstOpen: true })} positive>Login</Button>
 
         <Modal
+          basic
           onClose={() => this.setState({ firstOpen: false })}
           onOpen={() => this.setState({ firstOpen: true })}
           open={this.state.firstOpen}
-          dimmer='blurring'
+          closeOnDimmerClick={false}
+          dimmer='inverted'
         >
           <Modal.Header>
             <p>Connection</p>
           </Modal.Header>
           <Modal.Content>
             <p>Veuillez entrer une adresse email valide et votre mot de passe:</p>
-            <AuthForm onSubmit={this.onSubmit} closeModal={this.closeModal} />
+            <AuthForm onSubmit={this.onSubmit} />
           </Modal.Content>
+          <Modal.Actions>
+            <Button negative content='Annuler' onClick={this.closeModal} />
+          </Modal.Actions>
           <Modal
+            basic
             onClose={() => this.setState({ secondOpen: false })}
             open={this.state.secondOpen}
+            closeOnDimmerClick={false}
             size='small'
           >
             <Modal.Header>Erreur de connection</Modal.Header>

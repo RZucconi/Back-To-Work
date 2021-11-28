@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Header } from 'semantic-ui-react'
 
-import { onCreateUser } from '../../actions' 
+import { editUser } from '../../actions'
 import CustomReduxForm from '../CustomReduxForm'
 
-export default connect(null, { onCreateUser })(class SubscribeUser extends Component {
+
+export default connect(null, { editUser })(class EditUser extends Component {
   getFields = () => {
     return [
       {
@@ -35,18 +36,18 @@ export default connect(null, { onCreateUser })(class SubscribeUser extends Compo
     ]
   }
 
-  onCreateUser = async (formValues) => {
-    await this.props.onCreateUser(formValues)
+  onEditUser = async (formValues) => {
+    await this.props.editUser(formValues)
   }
 
-  render() {
-    return (
+  render(){
+    return(
       <>
-        <Header content="Formulaire d' inscription:" />
+        <Header content="modifier vos informations personnelles" />
         <CustomReduxForm 
-          formName='subscribeForm'
+          formName='editUserForm'
           fields={this.getFields()}
-          onSubmit={this.onCreateUser}
+          onSubmit={this.onEditUser}
           cancelButtonPath="/"
           displayCancelButton
         />
