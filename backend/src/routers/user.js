@@ -33,7 +33,7 @@ router.post('/users/logout', auth, async (req, res) => {
     })
     await req.user.save()
 
-    res.send('ca marche')
+    res.send()
   } catch (err) {
     res.status(500).send(err)
   }

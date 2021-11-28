@@ -20,7 +20,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(class App extends Component {
   
   render() {
-    console.log('TOKEN_IN_APP:::::', localStorage.getItem('TOKEN'))
     return (
       <Container>
         <Router history={history}>
@@ -31,7 +30,7 @@ export default connect(mapStateToProps)(class App extends Component {
               </div>
             :
             <div>non connecter</div>
-            }          
+          }          
           <Switch>
             <Route path="/auth" exact component={Auth} />
           </Switch>

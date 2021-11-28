@@ -3,24 +3,31 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Header, Menu } from 'semantic-ui-react'
 import Auth from './auth/Auth'
-import { signOut } from '../actions'
+import { signOut, authenticate } from '../actions'
 
 const mapStateToProps = (state) => {
   return { userToken: state.user.userToken }
 }
 
+export default connect(mapStateToProps, { signOut, authenticate })(class AppHeader extends Component {
+  state = { activeItem: 'home', signIn: this.props.isSignIn, currentToken: null, isAuth: false }
+  
+  componentDidMount() {
+    this.setState({ currentToken: localStorage.getItem('TOKEN') })
+  }
 
-export default connect(mapStateToProps, { signOut })(class AppHeader extends Component {
-  state = { activeItem: 'home', signIn: this.props.isSignIn }
-  
-  // removeToken = () => this.props.isSignIn === false ? localStorage.removeItem('TOKEN') : '' 
-  
-  componentDidUpdate(){
+  componentDidUpdate() {
+    if (this.state.isAuth === false && this.state.currentToken !== null) {
+      if (localStorage.getItem('TOKEN')) {
+        this.props.authenticate()
+        this.setState({ isAuth: true })
+      } 
+    } 
+
     if (this.state.signIn !== this.props.isSignIn){
-      this.setState({ signIn: this.props.isSignIn })
-      // this.removeToken()
+      this.setState({ signIn: this.props.isSignIn})
     }
-    // this.removeToken()
+    
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
