@@ -30,7 +30,7 @@ export default connect(mapStateToProps, { signIn })(class Auth extends Component
   render() {
     return (
       <div>
-        <Button onClick={() => this.setState({ firstOpen: true })}>Login</Button>
+        <Button onClick={() => this.setState({ firstOpen: true })} color='green'>Login</Button>
 
         <Modal
           onClose={() => this.setState({ firstOpen: false })}

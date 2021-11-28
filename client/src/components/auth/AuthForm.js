@@ -5,13 +5,14 @@ import { Button, Form, Message } from 'semantic-ui-react'
 const validate = (formValues) => {
   const errors = {}
   
-    if (!formValues.email) {
-      errors.email = ' Veuillez entrer un email valide.'
-    }
+  if (!formValues.email) {
+    errors.email = ' Veuillez entrer un email valide.'
+  }
 
   if (!formValues.password) {
     errors.password = ' Vous devez saisir un mot de passe.'
   }
+  
   return errors
 }
 
@@ -33,7 +34,7 @@ export default reduxForm({ form: 'authForm', validate})(class AuthForm extends C
     return (
       <div className={className}>
           <label>{label}</label>
-          <input {...input } type={type} autoComplete="off" />
+          <input {...input} type={type} autoComplete="off" />
           {this.renderError(meta)}
       </div>
     )

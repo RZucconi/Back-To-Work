@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Container } from 'semantic-ui-react'
-import history from '../history'
+import { onCreateUser } from '../actions'
 import AppHeader from './AppHeader'
-import Auth from './auth/Auth'
+import SubscribeUser from './user/SubcribeUser'
+import Welcome from './Welcome'
+import history from '../history'
 
 const mapStateToProps = (state) => {
   return {
@@ -17,22 +19,23 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(class App extends Component {
-  
+export default connect(mapStateToProps, { onCreateUser })(class App extends Component {
+  onCreateUser = async (formValues) => {
+    await this.props.onCreateUser(formValues)
+  }
+
   render() {
     return (
       <Container>
         <Router history={history}>
           <AppHeader isSignIn={this.props.isSignIn}/>
-          {this.props.isSignIn ? 
-              <div>
-                <p>Bienvenue {this.props.user.firstName} {this.props.user.lastName} sur votre application de gestion d' offres d' emploi</p>
-              </div>
-            :
-            <div>non connecter</div>
-          }          
           <Switch>
-            <Route path="/auth" exact component={Auth} />
+            <Route path="/" exact>
+              <Welcome firstName={this.props.user.firstName} lastName={this.props.user.lastName} isSignIn={this.props.isSignIn} />         
+            </Route>
+            <Route path="/subscribe" exact>
+              <SubscribeUser onCreateUser={this.onCreateUser} />
+            </Route>
           </Switch>
         </Router>
       </Container>

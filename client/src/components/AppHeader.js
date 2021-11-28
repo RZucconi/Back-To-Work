@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Button, Header, Menu } from 'semantic-ui-react'
+import { Button, Image, Menu } from 'semantic-ui-react'
 import Auth from './auth/Auth'
 import { signOut, authenticate } from '../actions'
+import { BTWLogo192 } from '../images'
 
 const mapStateToProps = (state) => {
   return { userToken: state.user.userToken }
@@ -44,16 +45,20 @@ export default connect(mapStateToProps, { signOut, authenticate })(class AppHead
           active={this.state.activeItem === 'home'}
           onClick={this.handleItemClick}
           >
-          <Link to="/"><Header as='h1'>Back To Work</Header></Link>
+          <Link to="/">
+            <Image src={BTWLogo192} size='tiny' verticalAlign='middle'/>
+            <span className='ui header'>{'  '}{'////'}{'  '}Back To Work</span>
+          </Link>
         </Menu.Item>
         {this.state.signIn ? (
           <Menu.Item
-          name='logout'
-          activeItem={this.state.activeItem === 'logout'}
-          onClick={this.handleItemClick}
-          className="right">
-              <Button content='Logout' color='red' onClick={this.handleLogout}/>
-            </Menu.Item>
+            name='logout'
+            activeItem={this.state.activeItem === 'logout'}
+            onClick={this.handleItemClick}
+            className="right"
+          >
+            <Button content='Déconnection' color='red' onClick={this.handleLogout}/>
+          </Menu.Item>
         ):( 
           <Menu.Item
           name='login'
@@ -61,6 +66,7 @@ export default connect(mapStateToProps, { signOut, authenticate })(class AppHead
           onClick={this.handleItemClick}
           className="right"
           >
+            <Link to="/subscribe"><Button primary>Souscrire</Button></Link>
             <Auth />
           </Menu.Item>
         )}
