@@ -18,6 +18,7 @@ export default function CustomReduxForm(props) {
   }
 
   const WrappedForm = reduxForm({ form: props.formName, validate })(class CustomForm extends Component {
+    state = { user: this.props.stateFormData }
     renderError({ error, touched }) {
       if (touched && error) {
         return (
@@ -29,6 +30,13 @@ export default function CustomReduxForm(props) {
       }
     }
 
+    getFormFieldValue = (field) => {
+      if (this.state.user) {
+        return this.state.user[field.input.name]
+      }
+      return
+    }
+
     renderInput = (field) => {
       const className = `field ${field.meta.touched && field.meta.invalid ? 'error' : ''}`
       return (
@@ -37,7 +45,7 @@ export default function CustomReduxForm(props) {
           <input
             {...field.input}
             type={field.type}
-            value={field.value}
+            value={this.getFormFieldValue(field)}
             autoComplete="off"
           />
           {this.renderError(field.meta)}

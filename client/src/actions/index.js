@@ -2,7 +2,18 @@ import axios from 'axios'
 import btwDB from '../apis/btwDB'
 import btwBD from '../apis/btwDB'
 import history from '../history'
-import { SIGN_IN, SIGN_OUT, SIGN_IN_ERROR, AUTHENTICATE, CREATE_USER, CREATE_USER_ERROR, EDIT_USER, EDIT_USER_ERROR } from './types'
+import {
+  SIGN_IN,
+  SIGN_OUT,
+  SIGN_IN_ERROR,
+  AUTHENTICATE,
+  CREATE_USER,
+  CREATE_USER_ERROR,
+  EDIT_USER,
+  EDIT_USER_ERROR,
+  DISPLAY_JOB_OFFERS,
+  DISPLAY_JOB_OFFERS_ERROR
+} from './types'
 
 const URL = process.env.REACT_APP_URL
 
@@ -14,7 +25,7 @@ export const signIn = (formValues) => async (dispatch) => {
     localStorage.setItem('TOKEN', response.data.token)
     history.push('/')
   } catch (err) {
-    dispatch({ type: SIGN_IN_ERROR, payload: err})
+    dispatch({ type: SIGN_IN_ERROR, payload: err })
   }
 }
 
@@ -51,7 +62,7 @@ export const onCreateUser = (formValues) => async (dispatch) => {
     localStorage.setItem('TOKEN', response.data.token)
     history.push('/')
   } catch (err) {
-    dispatch({type: CREATE_USER_ERROR, payload: err})
+    dispatch({ type: CREATE_USER_ERROR, payload: err })
   }
 }
 
@@ -63,9 +74,26 @@ export const editUser = (formValues) => async (dispatch) => {
         Authorization: `Bearer ${token}`
       }
     })
-
-    await dispatch({ type: EDIT_USER, payload: response.data })
+    
+    dispatch({ type: EDIT_USER, payload: response.data })
   } catch (err) {
-    dispatch({type: EDIT_USER_ERROR, payload: err})
+    dispatch({ type: EDIT_USER_ERROR, payload: err })
+  }
+}
+
+export const displayJobOffers = () => async (dispatch) => {
+  const token = localStorage.getItem('TOKEN')
+  try {
+    const response = await axios.get(`${URL}/jobOffers/61a7d70d2f68b0eea1fb5e45`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    console.log(response)
+
+    dispatch({ type: DISPLAY_JOB_OFFERS, payload: response.data })
+  } catch (err) {
+    dispatch({ type: DISPLAY_JOB_OFFERS_ERROR, payload: err })
   }
 }

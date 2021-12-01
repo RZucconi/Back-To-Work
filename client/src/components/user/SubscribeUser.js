@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Header } from 'semantic-ui-react'
 
-import { onCreateUser } from '../../actions' 
+import { onCreateUser } from '../../actions'
 import CustomReduxForm from '../CustomReduxForm'
 
 export default connect(null, { onCreateUser })(class SubscribeUser extends Component {
@@ -40,7 +40,7 @@ export default connect(null, { onCreateUser })(class SubscribeUser extends Compo
   }
 
   render() {
-    return (
+    return(
       <>
         <Header content="Formulaire d' inscription:" />
         <CustomReduxForm 
@@ -49,7 +49,7 @@ export default connect(null, { onCreateUser })(class SubscribeUser extends Compo
           onSubmit={this.onCreateUser}
           cancelButtonPath="/"
           displayCancelButton
-        />
+          />
       </>
     )
   }

@@ -5,8 +5,11 @@ import { Header } from 'semantic-ui-react'
 import { editUser } from '../../actions'
 import CustomReduxForm from '../CustomReduxForm'
 
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
 
-export default connect(null, { editUser })(class EditUser extends Component {
+export default connect(mapStateToProps, { editUser })(class EditUser extends Component {
   getFields = () => {
     return [
       {
@@ -48,6 +51,7 @@ export default connect(null, { editUser })(class EditUser extends Component {
           formName='editUserForm'
           fields={this.getFields()}
           onSubmit={this.onEditUser}
+          stateFormData={this.props.user}
           cancelButtonPath="/"
           displayCancelButton
         />

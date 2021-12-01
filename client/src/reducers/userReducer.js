@@ -5,7 +5,8 @@ const INITIAL_STATE = {
   lastName: null,
   _id: null,
   email: null,
-  userToken: null
+  userToken: null, 
+  error: null
 }
 
 export default function userReducer(state= INITIAL_STATE, action) {
@@ -20,7 +21,7 @@ export default function userReducer(state= INITIAL_STATE, action) {
     case SIGN_OUT:
     case SIGN_IN_ERROR:
     case CREATE_USER_ERROR:
-      return { ...state, firstName: null, lastName: null, _id: null, email: null, userToken: null }
+      return { ...state, firstName: null, lastName: null, _id: null, email: null, userToken: null, error: action.payload }
     default:
       return state
   }
