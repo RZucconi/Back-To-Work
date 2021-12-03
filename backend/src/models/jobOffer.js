@@ -74,6 +74,6 @@ const jobOfferSchema = new mongoose.Schema({
   timestamps: true
 })
 
-const JobOffer = mongoose.model('jobOffer', jobOfferSchema)
+const JobOffer = mongoose.model('JobOffer', jobOfferSchema)
 
 module.exports = JobOffer

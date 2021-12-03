@@ -3,12 +3,12 @@ import { Redirect } from 'react-router'
 import { Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Container } from 'semantic-ui-react'
+
+import history from '../history'
 import AppHeader from './AppHeader'
 import SubscribeUser from './user/SubscribeUser'
-// import Welcome from './Welcome'
-import history from '../history'
 import EditUser from './user/EditUser'
-import JobOfferList from './jobOffers/JobOffersList'
+import Welcome from './Welcome'
 
 const mapStateToProps = (state) => {
   return {
@@ -30,8 +30,7 @@ export default connect(mapStateToProps)(class App extends Component {
           <AppHeader isSignIn={this.props.isSignIn}/>
           <Switch>
             <Route path="/" exact>
-              {/* <Welcome />     */}
-              <JobOfferList />
+              <Welcome />
             </Route>
             <Route path="/subscribe" exact>
               {isSignIn ? <Redirect to="/" /> : <SubscribeUser />}

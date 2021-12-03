@@ -1,5 +1,6 @@
 const express = require('express')
 const JobOffer = require('../models/jobOffer')
+const User = require('../models/user')
 const auth = require('../middleware/auth')
 const upload = require('../middleware/upload')
 
@@ -12,9 +13,8 @@ router.post('/jobOffers', auth, async(req, res) => {
   })
 
   try{
-    await jobOffer.save(
-      res.status(201).send(jobOffer)
-    )
+    await jobOffer.save()
+    res.status(201).send(jobOffer)
   } catch (err) {
     res.status(400).send(err)
   }
@@ -69,17 +69,18 @@ router.get('/jobOffers', auth, async (req, res) => {
     sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
   }
 
-  try{
-    await req.user.populate({
+  try {
+    const jobOffers = await req.user.populate({
       path: 'jobOffers',
       match,
       options: {
-        limit: parseInt(req.query.limit),
-        ship: parseInt(req.query.skip),
+        limit: req.query.limit ? parseInt(req.query.limit) : null,
+        skip: req.query.skip ? parseInt(req.query.skip) : null,
         sort
       }
-    }).execPopulate()
-    res.send(req.user.jobOffers)
+    })
+
+    res.send(jobOffers.jobOffers)
   } catch (err) {
     res.status(500).send()
   }

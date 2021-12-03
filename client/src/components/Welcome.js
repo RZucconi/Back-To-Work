@@ -1,5 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Icon, Message } from 'semantic-ui-react'
+
+import JobOfferList from './jobOffers/JobOffersTable'
 
 export default function Welcome () {
   const profile = useSelector((state) => state.user)
@@ -8,9 +11,18 @@ export default function Welcome () {
   return isSignIn ? 
     (
       <div>
-        <p>Bienvenue {profile.firstName} {profile.lastName} sur votre application de gestion d' offres d' emploi</p>
+        <Message color='green' size='big'>
+          <Message.Header>
+            <Icon name="hand spock" size="large" /> 
+            <span>Bienvenue {profile.firstName} {profile.lastName} sur votre application de gestion d' offres d' emploi</span>
+          </Message.Header>
+        </Message>
+        <JobOfferList/>
       </div>
     ) : (
-      <div>non connecté</div>
+      <Message color='red' size='big'>
+        <Icon name="hand paper" size='large' />
+        <span>Vous n'êtes pas connecté...</span> 
+        </Message>
     )
 } 

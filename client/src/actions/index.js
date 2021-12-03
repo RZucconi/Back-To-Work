@@ -21,8 +21,8 @@ export const signIn = (formValues) => async (dispatch) => {
   try {
     const response = await btwBD.post('/users/login', { ...formValues })
     
-    await dispatch({ type: SIGN_IN, payload: response.data })
     localStorage.setItem('TOKEN', response.data.token)
+    await dispatch({ type: SIGN_IN, payload: response.data })
     history.push('/')
   } catch (err) {
     dispatch({ type: SIGN_IN_ERROR, payload: err })
@@ -30,7 +30,7 @@ export const signIn = (formValues) => async (dispatch) => {
 }
 
 
-export const signOut = () => async (dispatch) => {
+export const logOut = () => async (dispatch) => {
   const token = localStorage.getItem('TOKEN')
   await axios.post(`${URL}/users/logout`, {}, { 
     headers: {
@@ -38,8 +38,21 @@ export const signOut = () => async (dispatch) => {
     }
   })
   
-  dispatch({ type: SIGN_OUT }) 
   localStorage.removeItem('TOKEN')
+  await dispatch({ type: SIGN_OUT }) 
+  history.push('/')
+}
+
+export const logOutAll = () => async (dispatch) => {
+  const token = localStorage.getItem('TOKEN')
+  await axios.post(`${URL}/users/logoutAll`, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+
+  localStorage.removeItem('TOKEN')
+  await dispatch({ type: SIGN_OUT })
   history.push('/')
 }
 
@@ -84,15 +97,13 @@ export const editUser = (formValues) => async (dispatch) => {
 export const displayJobOffers = () => async (dispatch) => {
   const token = localStorage.getItem('TOKEN')
   try {
-    const response = await axios.get(`${URL}/jobOffers/61a7d70d2f68b0eea1fb5e45`, {
+    const response = await axios.get(`${URL}/jobOffers`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
 
-    console.log(response)
-
-    dispatch({ type: DISPLAY_JOB_OFFERS, payload: response.data })
+    await dispatch({ type: DISPLAY_JOB_OFFERS, payload: response.data })
   } catch (err) {
     dispatch({ type: DISPLAY_JOB_OFFERS_ERROR, payload: err })
   }

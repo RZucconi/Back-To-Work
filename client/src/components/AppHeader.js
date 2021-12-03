@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Dropdown, Icon, Image, Menu } from 'semantic-ui-react'
+
 import Auth from './auth/Auth'
-import { signOut, authenticate } from '../actions'
+import CustomModal from './CustomModal'
+import { logOut, logOutAll, authenticate } from '../actions'
 import { BTWLogo192 } from '../images'
 
 const mapStateToProps = (state) => {
@@ -13,8 +15,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { signOut, authenticate })(class AppHeader extends Component {
-  state = { signIn: this.props.isSignIn, currentToken: null, isAuth: false }
+export default connect(mapStateToProps, { logOut, logOutAll, authenticate })(class AppHeader extends Component {
+  state = { signIn: this.props.isSignIn, currentToken: null, isAuth: false, open: false }
   
   componentDidMount() {
     this.setState({ currentToken: localStorage.getItem('TOKEN') })
@@ -37,7 +39,11 @@ export default connect(mapStateToProps, { signOut, authenticate })(class AppHead
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
   handleLogout = () => {
-    this.props.signOut()
+    this.props.logOut()
+  }
+
+  handleLogoutAll = () => {
+    this.setState({ open: true })
   }
 
   render() {
@@ -46,7 +52,7 @@ export default connect(mapStateToProps, { signOut, authenticate })(class AppHead
         <Menu.Item
           name='home'
           onClick={this.handleItemClick}
-          >
+        >
           <Link to="/">
             <Image src={BTWLogo192} size='tiny' verticalAlign='middle'/>
             <span className='ui header'>{'    '}{'/////'}{'    '}Back To Work</span>
@@ -66,6 +72,16 @@ export default connect(mapStateToProps, { signOut, authenticate })(class AppHead
                     <span>Modifier vos informations</span>
                   </Dropdown.Item>
                 </Link>
+                <CustomModal
+                  modalTrigger={
+                    <Dropdown.Item>
+                      <Icon name="sign out alternate" verticalAlign='middle' color="red" />
+                      <span style={{color: "red"}}>Déconnection de tous les appareils</span>
+                    </Dropdown.Item>}
+                  header='Déconnection de tous les appareils'
+                  content='Vous êtes sur le point de déconnecter votre compte de tous les appareils sur lesquel il est connecté. Êtes-vous sûr de vouloir continuer?'
+                  onValidate={this.props.logOutAll}
+                />
               </Dropdown.Menu>
             </Dropdown>
             <Button content='Déconnection' negative onClick={this.handleLogout}/>

@@ -46,7 +46,7 @@ export default connect(mapStateToProps, { editUser })(class EditUser extends Com
   render(){
     return(
       <>
-        <Header content="modifier vos informations personnelles" />
+        <Header content="Modifier vos informations personnelles:" />
         <CustomReduxForm 
           formName='editUserForm'
           fields={this.getFields()}
