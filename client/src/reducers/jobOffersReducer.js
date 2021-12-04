@@ -1,18 +1,24 @@
-import { DISPLAY_JOB_OFFERS, DISPLAY_JOB_OFFERS_ERROR } from '../actions/types';
+import {
+  CREATE_JOB_OFFER_ERROR,
+  DISPLAY_JOB_OFFERS,
+  DISPLAY_JOB_OFFERS_ERROR,
+} from '../actions/types';
 
 const INITIAL_STATE = {
   isLoaded: false,
   jobOffers: null,
-  error: null
-}
+  error: null,
+};
 
-export default function jobOffersReducer(state=INITIAL_STATE, action) {
-  switch(action.type) {
+export default function jobOffersReducer(state = INITIAL_STATE, action) {
+  switch (action.type) {
     case DISPLAY_JOB_OFFERS:
-      return { ...state, isLoaded: true, jobOffers: action.payload }
+      return { ...state, isLoaded: true, jobOffers: action.payload };
     case DISPLAY_JOB_OFFERS_ERROR:
-      return { ...state, isLoaded: false, error: action.payload }
+      return { ...state, isLoaded: false, error: action.payload };
+    case CREATE_JOB_OFFER_ERROR:
+      return { ...state, isLoaded: true, error: action.payload };
     default:
-      return state
+      return state;
   }
 }
